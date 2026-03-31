@@ -6,7 +6,7 @@ public class Main {
 
         while (true) {
             System.out.println("Welcome to the Guessing Game!");
-            System.out.println("Which level of the game do you want to play? (2, 3, 4)");
+            System.out.println("Which level of the game do you want to play? (2, 3, 4, 4+)");
             String gameLevel = scanner.nextLine();
 
             switch (gameLevel) {
@@ -94,55 +94,68 @@ public class Main {
                     the better strategy.
                      */
 
-                    int secretNumber = (int) (100 * Math.random()) + 1;
-                    int guess1, guess2, guess3, guess4, guess5, guess6, guess7, guess8, guess9 = 0;
-                    int lastGuess = 0;
-                    int turn = 1;
-                    int high;
-                    int low;
-                    String feedback1, feedback2, feedback3, feedback4, feedback5, feedback6, feedback7, feedback8, feedback9;
-
-                    System.out.println("Guess the number from 1 - 100 (inclusive)");
-                    do {
-                        switch (turn) {
-                            case 1:
-                                guess1 = 50;
-                                lastGuess = guess1;
-                                turn++;
-                                if (lastGuess > secretNumber && lastGuess != secretNumber) {feedback1 = "Too High";}
-                                else {feedback1 = "Too Low";}
-                                System.out.println(lastGuess + "\n" + feedback1);
-                                break;
-
-                            case 2:
-                                break;
-
-                            case 3:
-                                break;
-
-                            case 4:
-                                break;
-
-                            case 5:
-                                break;
-
-                            case 6:
-                                break;
-
-                            case 7:
-                                break;
-
-                            case 8:
-                                break;
-
-                            case 9:
-                                break;
-
-                            case 10:
-                                break;
+                    System.out.println("How many games do you want the computer to play?");
+                    int numGames = scanner.nextInt();
+                    scanner.nextLine(); // consume newline
+                    
+                    int wins = 0;
+                    int losses = 0;
+                    
+                    for (int game = 1; game <= numGames; game++) {
+                        int secretNumber = (int) (100 * Math.random()) + 1;
+                        int guess = 0;
+                        int turn = 0;
+                        int high = 100;
+                        int low = 1;
+                        boolean won = false;
+                        
+                        if (numGames <= 5) {
+                            System.out.println("\n--- Game " + game + " ---");
+                            System.out.println("Secret number: " + secretNumber);
+                            System.out.println("Computer's guesses:");
                         }
-                    } while (lastGuess != secretNumber);
-
+                        
+                        do {
+                            guess = (high + low) / 2;
+                            turn++;
+                            
+                            if (numGames <= 5) {
+                                System.out.println("Turn " + turn + ": Computer guesses " + guess);
+                            }
+                            
+                            if (guess == secretNumber) {
+                                won = true;
+                                if (numGames <= 5) {
+                                    System.out.println("Correct! Computer won in " + turn + " turns!");
+                                }
+                                wins++;
+                            } else if (guess < secretNumber) {
+                                low = guess + 1;
+                                if (numGames <= 5) {
+                                    System.out.println("Too low");
+                                }
+                            } else {
+                                high = guess - 1;
+                                if (numGames <= 5) {
+                                    System.out.println("Too high");
+                                }
+                            }
+                        } while (guess != secretNumber && turn < 10);
+                        
+                        if (!won) {
+                            if (numGames <= 5) {
+                                System.out.println("Computer lost! Secret number was " + secretNumber);
+                            }
+                            losses++;
+                        }
+                    }
+                    
+                    System.out.println("\n=== Final Results ===");
+                    System.out.println("Games played: " + numGames);
+                    System.out.println("Computer wins: " + wins);
+                    System.out.println("Computer losses: " + losses);
+                    System.out.println("Win rate: " + (wins * 100 / numGames) + "%");
+                    
                     break;
 
                 default:
